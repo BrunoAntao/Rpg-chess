@@ -146,7 +146,7 @@ game.loadSets = function (path, callback) {
 
     var request = new XMLHttpRequest();
 
-    request.open('GET', 'client/assets/movesets/' + path);
+    request.open('GET', 'client/game/assets/movesets/' + path);
     request.responseType = 'text';
 
     request.onload = function () {
@@ -209,10 +209,10 @@ socket.on('connect', function () {
 
 })
 
-game.loadImage('client/assets/tileset1.png', 'tileset');
-game.loadImage('client/assets/cursor.png', 'cursor');
-game.loadImage('client/assets/pieces.png', 'pieces');
-game.loadImage('client/assets/marker.png', 'marker');
+game.loadImage('client/game/assets/tileset1.png', 'tileset');
+game.loadImage('client/game/assets/cursor.png', 'cursor');
+game.loadImage('client/game/assets/pieces.png', 'pieces');
+game.loadImage('client/game/assets/marker.png', 'marker');
 
 game.load(game.cache, init);
 

@@ -24,7 +24,7 @@ io.on('connection', function (socket) {
 
     socket.on('fetch sets', function () {
 
-        fs.readdir('./client/assets/movesets/', function (err, files) {
+        fs.readdir('./client/game/assets/movesets/', function (err, files) {
 
             if (err) throw err;
 

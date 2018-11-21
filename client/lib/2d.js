@@ -49,8 +49,28 @@ class Cursor {
     draw() {
 
         this.x = Math.floor(game.mouse.x / 32);
+
+        if (this.x > 15) {
+
+            this.x = 15;
+
+        } else if (this.x < 0) {
+
+            this.x = 0;
+
+        }
+
         this.y = Math.floor(game.mouse.y / 32);
 
+        if (this.y > 15) {
+
+            this.y = 15;
+
+        } else if (this.y < 0) {
+
+            this.y = 0;
+
+        }
         this.scene.ctx.drawImage(this.image, Math.floor(this.frame * 8 % this.image.width), Math.floor((this.frame * 8) / this.image.width) * 8, 8, 8, this.x * 8 * 4, this.y * 8 * 4, this.scale.x * 8, this.scale.y * 8);
 
     }

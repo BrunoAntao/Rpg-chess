@@ -28,7 +28,7 @@ function mouseCheck() {
 
     }
 
-    if (game.selected && game.selected.down && (game.mouse.left || game.mouse.right)) {
+    if (game.selected && game.selected.down && (game.mouse.left || game.mouse.middle || game.mouse.right)) {
 
         game.selected.down();
 
@@ -88,30 +88,3 @@ window.addEventListener('keyup', function (e) {
     game.keys[e.which] = false;
 
 })
-
-function keyCheck() {
-
-    if (game.keys[87]) {
-
-        game.camera.y += 1;
-
-    }
-
-    if (game.keys[83]) {
-
-        game.camera.y -= 1;
-
-    }
-
-    if (game.keys[65]) {
-
-        game.camera.x += 1;
-
-    }
-
-    if (game.keys[68]) {
-
-        game.camera.x -= 1;
-    }
-
-}
