@@ -205,7 +205,6 @@ function init() {
 
 function draw() {
 
-
     if (game.keys[83]) {
 
         console.log(game.map.export());

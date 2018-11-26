@@ -6,7 +6,7 @@ window.addEventListener('contextmenu', function (e) {
 
 function mouseCheck() {
 
-    for (let i = 0; i < game.pieces.length; i++) {
+    for (let i = game.pieces.length - 1; i >= 0; i--) {
 
         let obj = game.pieces[i];
 

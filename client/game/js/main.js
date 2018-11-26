@@ -42,11 +42,19 @@ let game = {
 
     keys: [],
 
+    matrix: [],
+
     pieces: [],
     movesets: [],
     attacksets: [],
 
     uid: 0
+
+}
+
+for (let x = 0; x < 16; x++) {
+
+    game.matrix[x] = [];
 
 }
 
@@ -160,7 +168,7 @@ game.loadSets = function (path, callback) {
 
         for (let i = 0; i < msg.length; i++) {
 
-            if (msg[i] != '.') {
+            if (msg[i] == '#') {
 
                 tiles.push({ x: Math.floor(i % 16), y: Math.floor(i / 16), c: msg[i] });
 
@@ -202,10 +210,24 @@ game.loadSets = function (path, callback) {
 }
 
 var socket = io();
+var logic;
 
 socket.on('connect', function () {
 
     console.log('connected');
+
+    var request = new XMLHttpRequest();
+
+    request.open('GET', 'client/game/assets/sheets/warrior.json');
+    request.responseType = 'text';
+
+    request.onload = function () {
+
+        game.test = JSON.parse(request.response);
+
+    };
+
+    request.send();
 
 })
 
@@ -217,6 +239,8 @@ game.loadImage('client/game/assets/marker.png', 'marker');
 game.load(game.cache, init);
 
 function init() {
+
+    requestAnimationFrame(draw);
 
     let data = '';
 
@@ -255,16 +279,22 @@ function init() {
 
     game.cursor = new Cursor(game.fg, -1, -1);
 
-    let w = new Warrior(game.fg, 8, 10);
+    new Warrior(game.fg, 8, 10);
     new Ranger(game.fg, 1, 0);
     new Mage(game.fg, 6, 8);
     new Arcanist(game.fg, 3, 0);
+
+    logic = new TBLogic();
 
 }
 
 function draw() {
 
-    //keyCheck();
+    if(game.keys[75]) {
+
+        logic.update();
+
+    }
 
     mouseCheck();
 
@@ -285,4 +315,3 @@ function draw() {
     requestAnimationFrame(draw);
 
 }
-requestAnimationFrame(draw);

@@ -12,5 +12,11 @@ module.exports = function (app) {
 
     });
 
+    app.get('/classedit', function (req, res) {
+
+        res.render('classedit.ejs');
+
+    });
+
 
 };
