@@ -1,22 +1,30 @@
-let bgcanvas = document.createElement("canvas");
-bgcanvas.width = 512;
-bgcanvas.height = 512;
-document.body.appendChild(bgcanvas);
-let bgctx = bgcanvas.getContext("2d");
+function panel(id, width = 512, height = 512) {
 
-bgctx.webkitImageSmoothingEnabled = false;
-bgctx.mozImageSmoothingEnabled = false;
-bgctx.imageSmoothingEnabled = false;
+    let canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    document.body.appendChild(canvas);
+    canvas.id = id;
+    let ctx = canvas.getContext("2d");
 
-let canvas = document.createElement("canvas");
-canvas.width = 512;
-canvas.height = 512;
-document.body.appendChild(canvas);
-let ctx = canvas.getContext("2d");
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
 
-ctx.webkitImageSmoothingEnabled = false;
-ctx.mozImageSmoothingEnabled = false;
-ctx.imageSmoothingEnabled = false;
+    return { canvas: canvas, ctx: ctx };
+
+}
+
+let bg = panel('main');
+let fg = panel('main');
+
+let left = panel('left', 160, 512);
+left.ctx.fillStyle = '#212121';
+left.ctx.fillRect(0, 0, 160, 512);
+
+let right = panel('right', 160, 512);
+right.ctx.fillStyle = '#212121';
+right.ctx.fillRect(0, 0, 160, 512);
 
 let seed = Math.random();
 function random() {
@@ -60,8 +68,8 @@ for (let x = 0; x < 16; x++) {
 
 game.fg = {
 
-    canvas: canvas,
-    ctx: ctx,
+    canvas: fg.canvas,
+    ctx: fg.ctx,
     objects: [],
     game: game
 
@@ -69,8 +77,8 @@ game.fg = {
 
 game.bg = {
 
-    canvas: bgcanvas,
-    ctx: bgctx,
+    canvas: bg.canvas,
+    ctx: bg.ctx,
     objects: [],
     game: game
 
@@ -290,7 +298,7 @@ function init() {
 
 function draw() {
 
-    if(game.keys[75]) {
+    if (game.keys[75]) {
 
         logic.update();
 
@@ -298,7 +306,7 @@ function draw() {
 
     mouseCheck();
 
-    game.fg.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    game.fg.ctx.clearRect(0, 0, game.fg.canvas.width, game.fg.canvas.height);
 
     game.fg.objects.sort(function (a, b) {
 

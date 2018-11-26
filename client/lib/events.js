@@ -38,8 +38,8 @@ function mouseCheck() {
 
 window.addEventListener('mousemove', function (e) {
 
-    game.mouse.x = e.clientX - canvas.offsetLeft;
-    game.mouse.y = e.clientY - canvas.offsetTop;
+    game.mouse.x = e.clientX - game.fg.canvas.offsetLeft;
+    game.mouse.y = e.clientY - game.fg.canvas.offsetTop;
 
 })
 

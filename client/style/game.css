@@ -7,7 +7,55 @@ body {
   
 }
 
-canvas {
+#left {
+
+  display: block;
+
+  padding: 0;
+  margin: auto;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 704px;
+
+  float: left;
+
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -o-crisp-edges;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+
+}
+
+#right {
+
+  display: block;
+
+  padding: 0;
+  margin: auto;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 704px;
+  right: 0;
+
+  float: right;
+
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -o-crisp-edges;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+
+}
+
+#main {
 
   display: block;
 
@@ -28,5 +76,27 @@ canvas {
   image-rendering: -o-crisp-edges;
   image-rendering: optimize-contrast;
   -ms-interpolation-mode: nearest-neighbor;
+
+}
+
+@media only screen and (max-width: 864px), screen and (max-height: 512px) {
+
+  #hide {
+
+    position: absolute;
+    text-align: center;
+
+    display: table;
+
+    font-size: 80px;
+
+    background-color: #212121;
+    color: white;
+
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+  
+  }
 
 }
