@@ -1,0 +1,45 @@
+{
+    "hp": 100,
+    "color":"#267f00",
+    "moveset": "ranger",
+    "attackset": "ranger",
+    "res": {
+        "type": "Energy",
+        "max": 100,
+        "energy": {
+            "move": 1,
+            "attack": 1
+        }
+    },
+    "stats": {
+        "str": 5,
+        "agi": 10,
+        "int": 5
+    },
+    "damage": {
+        "phys": {
+            "melee": 10,
+            "ranged": 40
+        },
+        "elemental": {
+            "earth": 0,
+            "wind": 0,
+            "water": 0,
+            "fire": 0,
+            "lightning": 0
+        },
+        "arcane": 0
+    },
+    "defence": {
+        "armour": 5,
+        "magicarmour": 0,
+        "reflex": 5,
+        "elementalarmour": {
+            "earth": 0,
+            "wind": 0,
+            "water": 0,
+            "fire": 0,
+            "lightning": 0
+        }
+    }
+}

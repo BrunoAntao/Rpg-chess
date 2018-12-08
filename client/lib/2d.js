@@ -52,11 +52,11 @@ class Cursor {
 
         if (this.x > 15) {
 
-            this.x = 15;
+            this.x = -1;
 
         } else if (this.x < 0) {
 
-            this.x = 0;
+            this.x = -1;
 
         }
 
@@ -64,11 +64,11 @@ class Cursor {
 
         if (this.y > 15) {
 
-            this.y = 15;
+            this.y = -1;
 
         } else if (this.y < 0) {
 
-            this.y = 0;
+            this.y = -1;
 
         }
         this.scene.ctx.drawImage(this.image, Math.floor(this.frame * 8 % this.image.width), Math.floor((this.frame * 8) / this.image.width) * 8, 8, 8, this.x * 8 * 4, this.y * 8 * 4, this.scale.x * 8, this.scale.y * 8);
@@ -87,12 +87,15 @@ class Piece {
         this.scene.game.pieces.push(this);
         this.uid = this.scene.game.uid++;
 
+        this.health = 0;
+
         this.x = x;
         this.y = y;
         this.z = 0;
 
         this.frame = 0;
 
+        this.showingStats = false;
         this.showingMoves = false;
         this.showingAttacks = false;
 
@@ -104,7 +107,32 @@ class Piece {
 
     }
 
+    showStats() {
+
+        if (!this.showingStats) {
+
+            Object.keys(this.sheet).forEach(function (key, i) {
+
+                new Label(left, i, key, this.sheet.color);
+
+            }, this)
+
+            this.showingStats = !this.showingStats;
+
+        } else {
+
+            left.ctx.fillStyle = '#212121';
+            left.ctx.fillRect(0, 0, left.canvas.width, left.canvas.height);
+
+            this.showingStats = !this.showingStats;
+
+        }
+
+    }
+
     pressed() {
+
+        this.showStats();
 
         if (this.sheet.res.energy.move > 0) {
 
@@ -112,7 +140,7 @@ class Piece {
 
         } else if (this.sheet.res.energy.attack > 0) {
 
-            console.log('Showing attacks');
+            this.showAttacks();
 
         }
 
@@ -122,15 +150,38 @@ class Piece {
 
         if (!this.showingMoves) {
 
+            this.scene.game.pieces.forEach(function (piece) {
+
+                if (piece.showingMoves || piece.showingAttacks) {
+
+                    piece.markers.forEach(function (marker) {
+
+                        marker.destroy();
+
+                    })
+
+                    piece.markers = [];
+
+                    piece.showingMoves = false;
+                    piece.showingAttacks = false;
+
+                }
+
+            })
+
             this.moves.forEach(function (tile) {
 
-                if (!this.scene.game.matrix[this.x + tile.x][this.y - tile.y]) {
+                if (this.x + tile.x >= 0 && this.y - tile.y >= 0 && this.x + tile.x < 16 && this.y - tile.y < 16) {
 
-                    this.markers.push(new Marker(this.scene, this.x + tile.x, this.y - tile.y, this));
+                    if (!this.scene.game.matrix[this.x + tile.x][this.y - tile.y]) {
 
-                } else {
+                        this.markers.push(new Marker(this.scene, this.x + tile.x, this.y - tile.y, this));
 
-                    this.markers.push(new Marker(this.scene, this.x + tile.x, this.y - tile.y, this, 1));
+                    } else {
+
+                        this.markers.push(new Marker(this.scene, this.x + tile.x, this.y - tile.y, this, 1));
+
+                    }
 
                 }
 
@@ -154,6 +205,65 @@ class Piece {
 
     }
 
+    showAttacks() {
+
+        if (!this.showingAttacks) {
+
+            this.scene.game.pieces.forEach(function (piece) {
+
+                if (piece.showingMoves || piece.showingAttacks) {
+
+                    piece.markers.forEach(function (marker) {
+
+                        marker.destroy();
+
+                    })
+
+                    piece.markers = [];
+
+                    piece.showingMoves = false;
+                    piece.showingAttacks = false;
+
+                }
+
+            })
+
+            this.attacks.forEach(function (tile) {
+
+                if (this.x + tile.x >= 0 && this.y - tile.y >= 0 && this.x + tile.x < 16 && this.y - tile.y < 16) {
+
+                    if (!this.scene.game.matrix[this.x + tile.x][this.y - tile.y]) {
+
+                        this.markers.push(new Marker(this.scene, this.x + tile.x, this.y - tile.y, this));
+
+                    } else {
+
+                        this.markers.push(new Marker(this.scene, this.x + tile.x, this.y - tile.y, this, 1));
+
+                    }
+
+                }
+
+            }, this);
+
+            this.showingAttacks = !this.showingAttacks;
+
+        } else {
+
+            this.markers.forEach(function (marker) {
+
+                marker.destroy();
+
+            })
+
+            this.markers = [];
+
+            this.showingAttacks = !this.showingAttacks;
+
+        }
+
+    }
+
     move(x, y) {
 
         if (this.sheet.res.energy.move > 0) {
@@ -171,6 +281,40 @@ class Piece {
 
     }
 
+    attack(x, y) {
+
+        if (this.sheet.res.energy.attack > 0) {
+
+            this.scene.game.matrix[x][y].damage(this);
+
+            this.sheet.res.energy.attack--;
+
+        }
+
+    }
+
+    damage(source) {
+
+        let damage = visit(source.sheet.damage).reduce((a, b) => a + b, 0);
+
+        this.health -= damage;
+
+        if (this.health <= 0) {
+
+            this.kill();
+
+        }
+
+    }
+
+    kill() {
+
+        this.scene.objects.splice(this.scene.objects.indexOf(this), 1);
+        this.scene.game.matrix[this.x][this.y] = null;
+        this.scene.game.pieces.splice(this.scene.game.pieces.indexOf(this), 1);
+
+    }
+
     draw() {
 
         this.scene.ctx.drawImage(this.image, Math.floor(this.frame * 8 % this.image.width), Math.floor((this.frame * 8) / this.image.width) * 8, 8, 8, this.x * 8 * 4, this.y * 8 * 4, this.scale.x * 8, this.scale.y * 8);
@@ -185,11 +329,13 @@ class Warrior extends Piece {
 
         super(scene, x, y)
 
-        this.sheet = scene.game.test;
+        this.sheet = scene.game.sheets['warrior'];
+        this.moves = this.scene.game.movesets[this.sheet.moveset];
+        this.attacks = this.scene.game.attacksets[this.sheet.attackset];
+
+        this.health = this.sheet.hp;
 
         this.frame = 0;
-
-        this.moves = this.scene.game.movesets['warrior'];
 
     }
 
@@ -200,6 +346,12 @@ class Ranger extends Piece {
     constructor(scene, x = 0, y = 0) {
 
         super(scene, x, y)
+
+        this.sheet = scene.game.sheets['ranger'];
+        this.moves = this.scene.game.movesets[this.sheet.moveset];
+        this.attacks = this.scene.game.attacksets[this.sheet.attackset];
+
+        this.health = this.sheet.hp;
 
         this.frame = 1;
 
@@ -213,15 +365,13 @@ class Mage extends Piece {
 
         super(scene, x, y)
 
+        this.sheet = scene.game.sheets['mage'];
+        this.moves = this.scene.game.movesets[this.sheet.moveset];
+        this.attacks = this.scene.game.attacksets[this.sheet.attackset];
+
+        this.health = this.sheet.hp;
+
         this.frame = 2;
-
-        this.moves = this.scene.game.movesets['mage'];
-
-    }
-
-    pressed() {
-
-        this.showMoves();
 
     }
 
@@ -232,6 +382,12 @@ class Arcanist extends Piece {
     constructor(scene, x = 0, y = 0) {
 
         super(scene, x, y)
+
+        this.sheet = scene.game.sheets['arcanist'];
+        this.moves = this.scene.game.movesets[this.sheet.moveset];
+        this.attacks = this.scene.game.attacksets[this.sheet.attackset];
+
+        this.health = this.sheet.hp;
 
         this.frame = 3;
 
@@ -270,6 +426,7 @@ class Marker {
                 if (this.parent.showingMoves) {
 
                     this.parent.showMoves();
+                    this.parent.showStats();
                     this.parent.move(this.x, this.y);
 
                 }
@@ -277,7 +434,13 @@ class Marker {
 
             case 1:
 
-                //console.log(this.parent.uid + ' attacked: ' + this.scene.game.matrix[this.x][this.y].uid);
+                if (this.parent.showingAttacks) {
+
+                    this.parent.showAttacks();
+                    this.parent.showStats();
+                    this.parent.attack(this.x, this.y);
+
+                }
                 break;
         }
 

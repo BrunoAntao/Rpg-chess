@@ -1,21 +1,24 @@
 {
     "hp": 100,
+    "color":"#0094ff",
+    "moveset": "mage",
+    "attackset": "mage",
     "res": {
-        "type": "Rage",
+        "type": "Mana",
         "max": 100,
         "energy": {
-            "move": 2,
+            "move": 1,
             "attack": 1
         }
     },
     "stats": {
-        "str": 10,
+        "str": 5,
         "agi": 5,
-        "int": 5
+        "int": 10
     },
     "damage": {
         "phys": {
-            "melee": 50,
+            "melee": 5,
             "ranged": 0
         },
         "elemental": {
@@ -25,11 +28,11 @@
             "fire": 0,
             "lightning": 0
         },
-        "arcane": 0
+        "arcane": 25
     },
     "defence": {
-        "armour": 50,
-        "magicarmour": 0,
+        "armour": 10,
+        "magicarmour": 10,
         "reflex": 0,
         "elementalarmour": {
             "earth": 0,

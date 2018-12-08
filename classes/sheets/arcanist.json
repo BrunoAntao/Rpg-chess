@@ -1,0 +1,45 @@
+{
+    "hp": 100,
+    "color":"#57007f",
+    "moveset": "arcanist",
+    "attackset": "arcanist",
+    "res": {
+        "type": "Mana",
+        "max": 100,
+        "energy": {
+            "move": 1,
+            "attack": 2
+        }
+    },
+    "stats": {
+        "str": 7,
+        "agi": 7,
+        "int": 7
+    },
+    "damage": {
+        "phys": {
+            "melee": 0,
+            "ranged": 0
+        },
+        "elemental": {
+            "earth": 0,
+            "wind": 0,
+            "water": 0,
+            "fire": 0,
+            "lightning": 0
+        },
+        "arcane": 100
+    },
+    "defence": {
+        "armour": 0,
+        "magicarmour": 0,
+        "reflex": 0,
+        "elementalarmour": {
+            "earth": 0,
+            "wind": 0,
+            "water": 0,
+            "fire": 0,
+            "lightning": 0
+        }
+    }
+}

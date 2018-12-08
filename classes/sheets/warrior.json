@@ -1,0 +1,45 @@
+{
+    "hp": 100,
+    "color":"#ff0000",
+    "moveset": "warrior",
+    "attackset": "warrior",
+    "res": {
+        "type": "Rage",
+        "max": 100,
+        "energy": {
+            "move": 2,
+            "attack": 1
+        }
+    },
+    "stats": {
+        "str": 10,
+        "agi": 5,
+        "int": 5
+    },
+    "damage": {
+        "phys": {
+            "melee": 50,
+            "ranged": 0
+        },
+        "elemental": {
+            "earth": 0,
+            "wind": 0,
+            "water": 0,
+            "fire": 0,
+            "lightning": 0
+        },
+        "arcane": 0
+    },
+    "defence": {
+        "armour": 50,
+        "magicarmour": 0,
+        "reflex": 0,
+        "elementalarmour": {
+            "earth": 0,
+            "wind": 0,
+            "water": 0,
+            "fire": 0,
+            "lightning": 0
+        }
+    }
+}
